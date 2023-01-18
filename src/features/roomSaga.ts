@@ -9,15 +9,16 @@ function* getApiData() {
     // @ts-ignore Type instantiation is excessively deep and possibly infinite
     const rooms = yield call(() =>
       fetch(
-        `https://destifyfunc-api-dev.azurewebsites.net/api/rooms?roomIds=${room1Id},${room2Id}`,
+        `/rooms?roomIds=${room1Id},${room2Id}`,
         // @ts-ignore Type instantiation is excessively deep and possibly infinite
         {
           headers: {
             Accept: "application/json",
             Authentication: "Bearer Token",
             mode: "no-cors",
-            "Access-Control-Allow-Origin":
-              "https://master--earnest-dolphin-4bb6a7.netlify.app/",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+              "Origin, Content-Type,  X-Requested-With, Accept",
             "x-functions-key":
               "trsmthTaK7p/CS6CSQamg0zB9xxmd9w5COrtM9vS1azadc4sksMYPA==",
           },
