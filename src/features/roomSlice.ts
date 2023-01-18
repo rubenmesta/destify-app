@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ReactElement } from "react";
 
 export const roomSlice = createSlice({
   name: "rooms",

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import Navbar from "./components/Navbar/NavBar";
 import NavigationTabs from "./components/Tabs/NavigationTabs";
 
 import { getRoomsFetch } from "./features/roomSlice";
