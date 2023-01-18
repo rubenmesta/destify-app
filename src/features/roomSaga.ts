@@ -15,8 +15,8 @@ function* getApiData() {
           headers: {
             Accept: "application/json",
             Authentication: "Bearer Token",
-            "x-functions-key":
-              "trsmthTaK7p/CS6CSQamg0zB9xxmd9w5COrtM9vS1azadc4sksMYPA==",
+            mode: "no-cors",
+            "x-functions-key": process.env.DESTIFY_API_KEY,
           },
         }
       )
