@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { RoomCard } from "../Card/RoomCard";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -19,7 +19,7 @@ export default function NavigationTabs() {
   const roomsData = useSelector((state) => state.rooms.rooms.roomInfo);
 
   // const roomId = roomsData.map((room: any) => room.room[0].id);
-  const rooms = roomsData.map((room: any) => room.room[0]);
+  const roomRes = roomsData?.map((room: any) => room.room[0]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -63,23 +63,28 @@ export default function NavigationTabs() {
           allowScrollButtonsMobile
           aria-label="scrollable auto tabs example"
         >
-          {rooms.map((tab: string, index: number) => {
-            return <Tab label={`Room ${index + 1}`} {...a11yProps(index)} />;
+          {roomRes?.map((tab: string, index: number) => {
+            return (
+              <Tab
+                label={`Room ${index + 1}`}
+                {...a11yProps(index)}
+                key={index + 1}
+              />
+            );
           })}
         </Tabs>
       </Box>
-      {rooms.map((room: any, index: number) => {
+      {roomRes?.map((room: any, index: number) => {
         return (
-          <TabPanel value={value} index={index}>
+          <TabPanel value={value} index={index} key={index}>
             <RoomCard
               nickname={room.roomName}
               vacationType={room.vacationType}
               travelStartDate={room.travelStartDate}
               travelEndDate={room.travelEndDate}
-              imageUrl={
-                room.imageUrl ? room.imageUrl : "/roomImagePlaceholder.png"
-              }
-              remainingBalance={room.remainingBalance}
+              imageUrl={room.imageUrl ? room.imageUrl : "/room.jpg"}
+              remainingBalance={Math.trunc(room.remainingBalance)}
+              roomType={room.roomType}
             />
           </TabPanel>
         );

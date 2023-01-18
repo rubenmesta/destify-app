@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ReactElement } from "react";
 
 export const roomSlice = createSlice({
   name: "rooms",
   initialState: {
-    rooms: [],
+    rooms: [] as string[],
     isLoading: false,
   },
   reducers: {

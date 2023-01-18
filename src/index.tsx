@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 // import { store } from './app/store';
 import App from "./App";
 import createSagaMiddleware from "@redux-saga/core";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import roomSaga from "./features/roomSaga";
 import roomsReducer from "./features/roomSlice";
 import "./index.css";
@@ -22,9 +22,9 @@ const store = configureStore({
 saga.run(roomSaga);
 
 root.render(
-  // <React.StrictMode>
-  <Provider store={store}>
-    <App />
-  </Provider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
 );

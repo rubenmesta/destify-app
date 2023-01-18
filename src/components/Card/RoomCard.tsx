@@ -22,6 +22,7 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { useSelector } from "react-redux";
+import { ReactElement } from "react";
 
 // import data from "../../_data/data.json";
 
@@ -38,6 +39,7 @@ interface RoomProps {
   remainingBalance?: number;
   roomDescription?: string;
   booked?: string;
+  roomType?: string;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -57,7 +59,7 @@ export const RoomCard = ({
   travelStartDate,
   travelEndDate,
   imageUrl,
-  booked,
+  roomType,
   remainingBalance,
 }: RoomProps): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
@@ -67,13 +69,12 @@ export const RoomCard = ({
   };
 
   // @ts-ignore Type instantiation is excessively deep and possibly infinite
-  const roomsData = useSelector((state) => state.rooms.rooms.roomInfo);
+  const roomsData = useSelector((state) => state.rooms?.rooms?.roomInfo);
 
-  // const roomId = roomsData.map((room: any) => room.room[0].id);
   const traveler = roomsData.map((traveler: any) => traveler.travelers[0]);
 
   return (
-    <Box sx={{ height: "100vh", width: "100vw" }}>
+    <Box sx={{ height: "100vh" }}>
       <CardHeader
         sx={{ padding: "2rem 1rem" }}
         avatar={
@@ -88,11 +89,15 @@ export const RoomCard = ({
         }
         title={nickname}
         subheader={
-          <Typography sx={{ textTransform: "capitalize" }}>
+          <Box
+            component="span"
+            sx={{ textTransform: "capitalize" }}
+            color="text.secondary"
+          >
             {`Room Type - ${vacationType}`}
             <br />
             <span>{`${travelStartDate} - ${travelEndDate}`}</span>{" "}
-          </Typography>
+          </Box>
         }
       />
       <CardMedia
@@ -122,7 +127,7 @@ export const RoomCard = ({
           color="text.secondary"
           sx={{ marginLeft: "8px" }}
         >
-          Junior Suite Tropical View Double
+          {roomType}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -149,15 +154,16 @@ export const RoomCard = ({
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="h5" sx={{ marginBottom: 2 }}>
+          <Typography variant="subtitle1" mb={2} sx={{ fronWeight: 900 }}>
             Guests in this room
           </Typography>
           {traveler.map((person: any, index: number) => {
             return (
               <Chip
-                icon={person.age > 18 ? <PersonIcon /> : <ChildCareIcon />}
+                key={index}
+                icon={person?.age > 18 ? <PersonIcon /> : <ChildCareIcon />}
                 label={
-                  person.age > 18 ? `Adult ${index + 1}` : `Child ${index + 1}`
+                  person?.age > 18 ? `Adult ${index + 1}` : `Child ${index + 1}`
                 }
                 variant="outlined"
                 sx={{ marginRight: 1 }}
