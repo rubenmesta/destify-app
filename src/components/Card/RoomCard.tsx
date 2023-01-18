@@ -1,0 +1,172 @@
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Collapse from "@mui/material/Collapse";
+import Avatar from "@mui/material/Avatar";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { blue } from "@mui/material/colors";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
+import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import ChildCareIcon from "@mui/icons-material/ChildCare";
+import PersonIcon from "@mui/icons-material/Person";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import Chip from "@mui/material/Chip";
+import { Button } from "@mui/material";
+import Box from "@mui/material/Box";
+
+import { useSelector } from "react-redux";
+
+// import data from "../../_data/data.json";
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+interface RoomProps {
+  nickname: string;
+  vacationType: string;
+  travelStartDate: string;
+  travelEndDate: string;
+  imageUrl?: string;
+  remainingBalance?: number;
+  roomDescription?: string;
+  booked?: string;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
+export const RoomCard = ({
+  nickname,
+  vacationType,
+  travelStartDate,
+  travelEndDate,
+  imageUrl,
+  booked,
+  remainingBalance,
+}: RoomProps): JSX.Element => {
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  // @ts-ignore Type instantiation is excessively deep and possibly infinite
+  const roomsData = useSelector((state) => state.rooms.rooms.roomInfo);
+
+  // const roomId = roomsData.map((room: any) => room.room[0].id);
+  const traveler = roomsData.map((traveler: any) => traveler.travelers[0]);
+
+  return (
+    <Box sx={{ height: "100vh", width: "100vw" }}>
+      <CardHeader
+        sx={{ padding: "2rem 1rem" }}
+        avatar={
+          <Avatar sx={{ bgcolor: blue[500] }} aria-label="recipe">
+            <MeetingRoomIcon color="action" />
+          </Avatar>
+        }
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title={nickname}
+        subheader={
+          <Typography sx={{ textTransform: "capitalize" }}>
+            {`Room Type - ${vacationType}`}
+            <br />
+            <span>{`${travelStartDate} - ${travelEndDate}`}</span>{" "}
+          </Typography>
+        }
+      />
+      <CardMedia
+        component="img"
+        height="194"
+        image={imageUrl}
+        alt="Hotel room"
+      />
+      <CardContent sx={{ height: "5rem", display: "flex", flexWrap: "wrap" }}>
+        <Box>
+          <Chip
+            icon={<CheckCircleOutlineIcon />}
+            label="Booked"
+            variant="outlined"
+            sx={{ marginRight: 1 }}
+            color="success"
+          />
+          <Chip
+            icon={<PaidOutlinedIcon />}
+            label={`Balence Due - $${remainingBalance}`}
+            variant="outlined"
+            color="warning"
+          />
+        </Box>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ marginLeft: "8px" }}
+        >
+          Junior Suite Tropical View Double
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <Button
+          startIcon={<EditLocationAltIcon />}
+          sx={{ textTransform: "capitalize" }}
+        >
+          Modify
+        </Button>
+        <Button
+          startIcon={<PaidOutlinedIcon />}
+          sx={{ textTransform: "capitalize" }}
+        >
+          Make Payment
+        </Button>
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography variant="h5" sx={{ marginBottom: 2 }}>
+            Guests in this room
+          </Typography>
+          {traveler.map((person: any, index: number) => {
+            return (
+              <Chip
+                icon={person.age > 18 ? <PersonIcon /> : <ChildCareIcon />}
+                label={
+                  person.age > 18 ? `Adult ${index + 1}` : `Child ${index + 1}`
+                }
+                variant="outlined"
+                sx={{ marginRight: 1 }}
+                color="primary"
+              />
+            );
+          })}
+        </CardContent>
+      </Collapse>
+    </Box>
+  );
+};
