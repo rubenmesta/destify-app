@@ -16,6 +16,7 @@ function* getApiData() {
             Accept: "application/json",
             Authentication: "Bearer Token",
             mode: "no-cors",
+            AccessControlAllowOrigin: "*",
             "x-functions-key": process.env.DESTIFY_API_KEY,
           },
         }
