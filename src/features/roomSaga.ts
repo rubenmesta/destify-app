@@ -16,7 +16,8 @@ function* getApiData() {
             Accept: "application/json",
             Authentication: "Bearer Token",
             mode: "no-cors",
-            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Origin":
+              "https://master--earnest-dolphin-4bb6a7.netlify.app/",
             "x-functions-key":
               "trsmthTaK7p/CS6CSQamg0zB9xxmd9w5COrtM9vS1azadc4sksMYPA==",
           },
