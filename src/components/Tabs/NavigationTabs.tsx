@@ -18,8 +18,8 @@ export default function NavigationTabs() {
   // @ts-ignore Type instantiation is excessively deep and possibly infinite
   const roomsData = useSelector((state) => state.rooms.rooms.roomInfo);
 
-  // const roomId = roomsData.map((room: any) => room.room[0].id);
   const roomRes = roomsData?.map((room: any) => room.room[0]);
+  const roomId = roomsData?.map((room) => room.room[0].id);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -55,30 +55,33 @@ export default function NavigationTabs() {
   return (
     <Box sx={{ bgcolor: "background.paper" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons={true}
-          allowScrollButtonsMobile
-          aria-label="scrollable auto tabs example"
-        >
-          {roomRes?.map((tab: string, index: number) => {
-            return (
-              <Tab
-                label={`Room ${index + 1}`}
-                {...a11yProps(index)}
-                key={index + 1}
-              />
-            );
-          })}
-        </Tabs>
+        {roomId.length >= 2 && (
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons={true}
+            allowScrollButtonsMobile
+            aria-label="scrollable auto tabs example"
+          >
+            {roomRes?.map((tab: string, index: number) => {
+              return (
+                <Tab
+                  label={`Room ${index + 1}`}
+                  {...a11yProps(index)}
+                  key={index + 1}
+                />
+              );
+            })}
+          </Tabs>
+        )}
       </Box>
       {roomRes?.map((room: any, index: number) => {
         return (
           <TabPanel value={value} index={index} key={index}>
             <RoomCard
               nickname={room.roomName}
+              // groupName={groupName}
               vacationType={room.vacationType}
               travelStartDate={room.travelStartDate}
               travelEndDate={room.travelEndDate}
