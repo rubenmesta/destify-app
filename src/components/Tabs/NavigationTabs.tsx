@@ -1,10 +1,17 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { RoomCard } from "../Card/RoomCard";
 import { useSelector } from "react-redux";
+import {
+  getPendingSelector,
+  getRoomsSelector,
+} from "../../store/room/selectors";
+import { fetchRoomRequest } from "../../store/room/actions";
+import { useDispatch } from "react-redux";
+
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -13,17 +20,25 @@ interface TabPanelProps {
 }
 
 export default function NavigationTabs() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+
+  const dispatch = useDispatch();
+  const pending = useSelector(getPendingSelector);
+  const roomDetails = useSelector(getRoomsSelector);
+
+  useEffect(() => {
+    dispatch(fetchRoomRequest());
+  }, [dispatch]);
 
   // @ts-ignore Type instantiation is excessively deep and possibly infinite
-  const roomsData = useSelector((state) => state.rooms.rooms.roomInfo);
-
-  const roomRes = roomsData?.map((room: any) => room.room[0]);
-  const roomId = roomsData?.map((room) => room.room[0].id);
+  const roomData = roomDetails?.roomInfo?.map((room) => room.room[0]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  console.log("room details", roomData);
+  // console.log("rooms data", roomsData);
+  // console.log("room res", roomRes);
 
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -38,7 +53,7 @@ export default function NavigationTabs() {
       >
         {value === index && (
           <Box>
-            <Typography>{children}</Typography>
+            <Box>{children}</Box>
           </Box>
         )}
       </div>
@@ -52,10 +67,15 @@ export default function NavigationTabs() {
     };
   }
 
+  // Hack
+  const arrLength = roomDetails.length ?? 2;
+
+  console.log("all rooms", arrLength);
+
   return (
     <Box sx={{ bgcolor: "background.paper" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        {roomId.length >= 2 && (
+        {arrLength >= 2 ? (
           <Tabs
             value={value}
             onChange={handleChange}
@@ -64,7 +84,7 @@ export default function NavigationTabs() {
             allowScrollButtonsMobile
             aria-label="scrollable auto tabs example"
           >
-            {roomRes?.map((tab: string, index: number) => {
+            {roomData?.map((tab: string, index: number) => {
               return (
                 <Tab
                   label={`Room ${index + 1}`}
@@ -74,24 +94,41 @@ export default function NavigationTabs() {
               );
             })}
           </Tabs>
-        )}
+        ) : null}
       </Box>
-      {roomRes?.map((room: any, index: number) => {
-        return (
-          <TabPanel value={value} index={index} key={index}>
-            <RoomCard
-              nickname={room.roomName}
-              // groupName={groupName}
-              vacationType={room.vacationType}
-              travelStartDate={room.travelStartDate}
-              travelEndDate={room.travelEndDate}
-              imageUrl={room.imageUrl ? room.imageUrl : "/room.jpg"}
-              remainingBalance={Math.trunc(room.remainingBalance)}
-              roomType={room.roomType}
-            />
-          </TabPanel>
-        );
-      })}
+      {pending ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "300px",
+          }}
+        >
+          <CircularProgress
+            sx={{
+              color: "primary",
+            }}
+          />
+        </Box>
+      ) : (
+        roomData?.map((room: any, index: number) => {
+          return (
+            <TabPanel value={value} index={index} key={index}>
+              <RoomCard
+                id={room.id}
+                nickname={room.roomName}
+                vacationType={room.vacationType}
+                travelStartDate={room.travelStartDate}
+                travelEndDate={room.travelEndDate}
+                imageUrl={room.imageUrl ? room.imageUrl : "/room.jpg"}
+                remainingBalance={Math.trunc(room.remainingBalance)}
+                roomType={room.roomType}
+              />
+            </TabPanel>
+          );
+        })
+      )}
     </Box>
   );
 }

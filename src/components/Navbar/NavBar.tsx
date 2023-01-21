@@ -11,7 +11,7 @@ import { blue } from "@mui/material/colors";
 export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="primary">
+      <AppBar position="static" sx={{ backgroundColor: "primary" }}>
         <Toolbar>
           <IconButton
             size="large"

@@ -20,8 +20,9 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Chip from "@mui/material/Chip";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
-
+import { RoomProps } from "../../store/room/types";
 import { useSelector } from "react-redux";
+import { getRoomsSelector } from "../../store/room/selectors";
 
 // import data from "../../_data/data.json";
 
@@ -29,16 +30,8 @@ interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
-interface RoomProps {
-  nickname: string;
-  vacationType: string;
-  travelStartDate: string;
-  travelEndDate: string;
-  imageUrl?: string;
-  remainingBalance?: number;
-  roomDescription?: string;
-  booked?: string;
-  roomType?: string;
+interface TravelerProps {
+  travelers: string[];
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -53,6 +46,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 export const RoomCard = ({
+  id,
   nickname,
   vacationType,
   travelStartDate,
@@ -61,16 +55,19 @@ export const RoomCard = ({
   roomType,
   remainingBalance,
 }: RoomProps): JSX.Element => {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const roomDetails = useSelector(getRoomsSelector);
   // @ts-ignore Type instantiation is excessively deep and possibly infinite
-  const roomsData = useSelector((state) => state.rooms?.rooms?.roomInfo);
+  const roomData = roomDetails?.roomInfo?.map((item) => item);
 
-  const traveler = roomsData.map((traveler: any) => traveler.travelers[0]);
+  const traveler = roomData.map(
+    (traveler: TravelerProps) => traveler.travelers[0]
+  );
 
   return (
     <Box sx={{ height: "100vh" }}>

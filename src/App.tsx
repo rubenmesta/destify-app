@@ -1,28 +1,24 @@
 import { useEffect } from "react";
 
-import { useDispatch } from "react-redux";
 import NavigationTabs from "./components/Tabs/NavigationTabs";
 
-import { getRoomsFetch } from "./features/roomSlice";
-
-import { ThemeProvider } from "@mui/material/styles";
-
-import { theme } from "./Theme";
 import "./index.css";
 import { Layout } from "./components/Layout/Layout";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRoomRequest } from "./store/room/actions";
+import { getRoomsSelector } from "./store/room/selectors";
 
 const App = () => {
   const dispatch = useDispatch();
+  const roomInfo = useSelector(getRoomsSelector);
 
   useEffect(() => {
-    dispatch(getRoomsFetch());
+    dispatch(fetchRoomRequest());
   }, [dispatch]);
 
   return (
     <Layout>
-      <ThemeProvider theme={theme}>
-        <NavigationTabs />
-      </ThemeProvider>
+      <NavigationTabs />
     </Layout>
   );
 };

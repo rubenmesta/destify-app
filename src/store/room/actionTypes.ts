@@ -1,0 +1,3 @@
+export const FETCH_ROOM_REQUEST = "FETCH_ROOMS";
+export const FETCH_ROOM_SUCCESS = "SET_ROOMS";
+export const FETCH_ROOM_FAILED = "FETCH_ROOMS_FAILED";
