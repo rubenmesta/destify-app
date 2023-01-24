@@ -23,7 +23,7 @@ export default function NavigationTabs() {
   const [value, setValue] = useState(0);
 
   const dispatch = useDispatch();
-  const pending = useSelector(getPendingSelector);
+  const isLoading = useSelector(getPendingSelector);
   const roomDetails = useSelector(getRoomsSelector);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export default function NavigationTabs() {
           </Tabs>
         ) : null}
       </Box>
-      {pending ? (
+      {isLoading ? (
         <Box
           sx={{
             display: "flex",

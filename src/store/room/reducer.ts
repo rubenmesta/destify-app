@@ -4,10 +4,9 @@ import {
   FETCH_ROOM_SUCCESS,
   FETCH_ROOM_FAILED,
 } from "./actionTypes";
-import { StoreState } from "../rootReducer";
 
 const initialState: RoomState = {
-  pending: false,
+  isLoading: false,
   rooms: [],
   error: null,
 };
@@ -17,19 +16,19 @@ export default (state = initialState, action: RoomActions) => {
     case FETCH_ROOM_REQUEST:
       return {
         ...state,
-        pending: true,
+        isLoading: true,
       };
     case FETCH_ROOM_SUCCESS:
       return {
         ...state,
-        pending: false,
+        isLoading: false,
         rooms: action.payload.rooms,
         error: null,
       };
     case FETCH_ROOM_FAILED:
       return {
         ...state,
-        pending: false,
+        isLoading: false,
         rooms: [],
         error: action.payload.error,
       };

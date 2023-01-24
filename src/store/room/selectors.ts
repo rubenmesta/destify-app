@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 import { StoreState } from "../rootReducer";
 
-const getPending = (state: StoreState) => state.rooms.pending;
+const getPending = (state: StoreState) => state.rooms.isLoading;
 
 const getRooms = (state: StoreState) => state.rooms.rooms;
 
@@ -12,7 +12,7 @@ export const getRoomsSelector = createSelector(getRooms, (rooms) => rooms);
 
 export const getPendingSelector = createSelector(
   getPending,
-  (pending) => pending
+  (isLoading) => isLoading
 );
 
 export const getErrorSelector = createSelector(getError, (error) => error);

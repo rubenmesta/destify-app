@@ -62,6 +62,7 @@ export const RoomCard = ({
   };
 
   const roomDetails = useSelector(getRoomsSelector);
+  console.log("room details", roomDetails);
   // @ts-ignore Type instantiation is excessively deep and possibly infinite
   const roomData = roomDetails?.roomInfo?.map((item) => item);
 

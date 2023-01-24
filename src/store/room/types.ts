@@ -18,7 +18,7 @@ export interface RoomProps {
 }
 
 export interface RoomState {
-  pending: boolean;
+  isLoading: boolean;
   rooms: RoomProps[];
   error: string | null;
 }
